@@ -1,7 +1,7 @@
 import json
 
 def get_list():
-    file = open("answers.txt", "r")
+    file = open("data/answers.txt", "r")
 
     answers = []
     for line in file:
@@ -12,7 +12,8 @@ def get_list():
     return answers
 
 def get_frequencies():
-    with open("frequencies.txt") as f:
+    with open("data/frequencies.txt") as f:
         freq = f.read()
 
     return json.loads(freq)
+

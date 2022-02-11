@@ -17,3 +17,20 @@ def get_frequencies():
 
     return json.loads(freq)
 
+def valid_entry():
+    while(True):
+        not_ok = False
+        result = input()
+        for i in result:
+            if(not (i == 'G' or i == 'Y' or i == 'N' or i == 'g' or i == 'y' or i == 'n')):
+                not_ok = True
+        if(len(result) != 5):
+            print("Response must be five letters")
+        elif(not_ok):
+            print("Response must only use G, Y, or N")
+        else:
+            break
+    if(result == "GGGGG" or result == "ggggg"):
+        return True
+    else:
+        return False

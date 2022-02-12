@@ -5,7 +5,7 @@ def get_list():
 
     answers = []
     for line in file:
-        answers.append(line.strip())
+        answers.append(list(line.strip()))
 
     file.close()
 
@@ -34,3 +34,10 @@ def valid_entry():
         return True
     else:
         return False
+
+def toString(word):
+    new_word = ""
+    for i in word:
+        new_word += i
+    
+    return new_word

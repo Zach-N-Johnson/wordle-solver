@@ -4,18 +4,23 @@ import utils
 clear = lambda: os.system('cls')
 
 def main():
+    guesses = 0
     answers = utils.get_list()
     freq = utils.get_frequencies()
-    word = "slate"
-    result = ""
-
+    word = ['s', 'l', 'a', 't', 'e']
     clear()
-    print("Wordle Solver\nInput G for green, Y for yellow, and N for gray")
+
+    print("Wordle Solver\nInput G for green\nInput Y for yellow\nInput N for gray")
     while(True):
-        print("\nTry", word)
+        print(f"\nTry {utils.toString(word)}")
         if(utils.valid_entry()):
+            print(f"Solved in {guesses+1} guesses")
             break
-        word = "slote"
+
+
+        
+        guesses += 1
+        
 
     new_wordle = input("New Wordle? (Y, N)\n")
     if(new_wordle == "Y" or new_wordle == "y"):

@@ -30,6 +30,8 @@ def main():
 
         answers = utils.checkFull(guess, colors, answers)
 
+        word = utils.getNewWord(answers, freq)
+
         guesses += 1
         
 

@@ -1,5 +1,4 @@
 import json
-from re import L
 
 def getList():
     file = open("data/answers.txt", "r")
@@ -13,7 +12,7 @@ def getList():
     return answers
 
 def getFrequencies():
-    with open("data/frequencies.txt") as f:
+    with open("data/revised_frequencies.txt") as f:
         freq = f.read()
 
     return json.loads(freq)
@@ -89,3 +88,35 @@ def checkGray(letter, list):
                 list.remove(i)
                 break
     return list
+
+def checkDup(list):
+    if len(list) == len(set(list)):
+        return None
+    return getDup(list)
+
+def getDup(list):
+    l = []
+    for i in list:
+        if i not in l:
+            l.append(i)
+        else:
+            return i
+    return None
+
+def getFreqs():
+    answers = getList()
+    total = 11575
+    freqs = dict.fromkeys(['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'], 0)
+    for i in answers:
+        for j in i:
+            freqs[j] += 1
+        if checkDup(i) != None:
+            freqs[checkDup(i)] -= 1
+            total -= 1
+    for i in freqs:
+        freqs[i] /= total
+    print(dict(sorted(freqs.items(), key=lambda x: x[1], reverse=True)))
+
+def getNewWord(answers, freq):
+    # TODO
+    return

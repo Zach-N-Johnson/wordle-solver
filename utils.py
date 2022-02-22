@@ -51,7 +51,6 @@ def toList(word):
 # return new list with only the possible words left after guess
 def checkFull(word, colors, list):
     k = 0
-    dups = checkDup(word)
     for i in colors:
         if i == 'G' or i == 'g':
             list = checkGreen(k, word[k], list)
@@ -131,7 +130,6 @@ def getNewWord(answers, freq):
     answersfreq = []
     for i in answers:
         totalfreq = 0
-        dups = checkDup(i)
         for j in i:
             totalfreq += freq[j]
         if checkDup(i):
@@ -169,7 +167,6 @@ def getTopFive(answers, freq):
 def getColors(word, guess):
     colors = []
     yellow = False
-    dup = getDup(word)
     for i in range(0, 5):
         if word[i] == guess[i]:
             colors.append("G")

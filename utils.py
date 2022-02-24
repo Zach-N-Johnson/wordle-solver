@@ -1,13 +1,10 @@
 # get answer list
 def getAnswers():
     file = open("data/answers.txt", "r")
-
     answers = []
     for line in file:
         answers.append(list(line.strip()))
-
     file.close()
-
     return answers
 
 # check if color entry is valid, return input
@@ -18,9 +15,10 @@ def validColors():
         for i in result:
             if(not (i == 'G' or i == 'Y' or i == 'N' or i == 'g' or i == 'y' or i == 'n')):
                 not_ok = True
+                break
         if(len(result) != 5):
             print("Response must be five letters")
-        elif(not_ok):
+        elif not_ok:
             print("Response must only use G, Y, or N")
         else:
             break
@@ -30,24 +28,20 @@ def validColors():
 def validGuess():
     while(True):
         guess = input()
-        if(len(guess) != 5):
-            print("Response must be five letters")
-        else:
+        if len(guess) == 5:
             break
+        else:
+            print("Response must be five letters")
     return guess
 
 # convert list to string
 def toString(word):
-    new_word = ""
-    for i in word:
-        new_word += i
-    return new_word
+    return "".join(word)
 
 # convert string to list
 def toList(word):
     return list(word)
 
-# if checked green before, only remove gray in that position
 # return new list with only the possible words left after guess
 def checkFull(word, colors, list):
     k = 0
@@ -71,24 +65,15 @@ def checkGreen(pos, letter, list):
 # return list after yellow check
 def checkYellow(pos, letter, list):
     for i in reversed(list):
-        check = True
-        if i[pos] == letter:
+        if i[pos] == letter or letter not in i:
             list.remove(i)
-        else:
-            for j in i:
-                if j == letter:
-                    check = False
-            if check:
-                list.remove(i)
     return list
 
 # return list after gray check
 def checkGray(letter, list):
     for i in reversed(list):
-        for j in i:
-            if j == letter:
-                list.remove(i)
-                break
+        if letter in i:
+            list.remove(i)
     return list
 
 # check for duplicates in a list, return the duplicate item
@@ -119,23 +104,24 @@ def getFreqs(list):
         if checkDup(i):
             freqs[checkDup(i)[0]] -= 1
             total -= 1
-        if checkDup(i) and len(checkDup(i)) == 2:
-            freqs[checkDup(i)[1]] -= 1
+            if len(checkDup(i)) == 2:
+                freqs[checkDup(i)[1]] -= 1
     for i in freqs:
         freqs[i] /= total
-    return dict(sorted(freqs.items(), key=lambda x: x[1], reverse=True))
+    return freqs
 
 # use new freq data to return word with highest possible freq
 def getNewWord(answers, freq):
     answersfreq = []
     for i in answers:
         totalfreq = 0
+        dups = checkDup(i)
         for j in i:
             totalfreq += freq[j]
-        if checkDup(i):
+        if dups:
             totalfreq -= freq[checkDup(i)[0]]
-        if checkDup(i) and len(checkDup(i)) == 2:
-            totalfreq -= freq[checkDup(i)[1]]
+            if len(dups) == 2:
+                totalfreq -= freq[checkDup(i)[1]]
         answersfreq.append(totalfreq)
     answersfreq, answers = (list(t) for t in zip(*sorted(zip(answersfreq, answers))))
     return answers[-1]
@@ -148,12 +134,13 @@ def getTopFive(answers, freq):
 
     for i in answers:
         totalfreq = 0
+        dups = checkDup(i)
         for j in i:
             totalfreq += freq[j]
-        if checkDup(i):
-            totalfreq -= freq[checkDup(i)[0]]
-        if checkDup(i) and len(checkDup(i)) == 2:
-            totalfreq -= freq[checkDup(i)[1]]
+        if dups:
+            totalfreq -= freq[dups[0]]
+            if len(dups) == 2:
+                totalfreq -= freq[dups[1]]
         answersfreq.append(totalfreq)
     answersfreq, answers = (list(t) for t in zip(*sorted(zip(answersfreq, answers))))
     for i in reversed(answers):
@@ -166,18 +153,12 @@ def getTopFive(answers, freq):
 
 def getColors(word, guess):
     colors = []
-    yellow = False
     for i in range(0, 5):
         if word[i] == guess[i]:
             colors.append("G")
         else:
-            for j in range(0, 5):
-                if word[j] == guess[i]:
-                    yellow = True
-                    break
-            if yellow:
+            if guess[i] in word:
                 colors.append("Y")
             else:
                 colors.append("N")
-        yellow = False
     return colors

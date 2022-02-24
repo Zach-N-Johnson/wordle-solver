@@ -8,4 +8,4 @@ Not very good
 5 - 261  
 6 - 56  
 x - 16  
-Runtime - 132s  
+Runtime - 124s  

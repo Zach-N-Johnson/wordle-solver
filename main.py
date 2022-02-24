@@ -14,7 +14,7 @@ def main():
 
     print("Wordle Solver\nInput G for green, Y for yellow, and N for gray")
     while(True):
-        print("Top five options:")
+        print(f"Top {len(words)} options:")
         for i in words:
             print(utils.toString(i))
 
@@ -41,10 +41,9 @@ def main():
         main()
 
 def getAverage():
-    f = open("solutions.txt", "a")
     guesses = 0
     answers = utils.getAnswers()
-    total1 = total2 = total3 = total4 = total5 = total6 = totalx = 0
+    totals = [0, 0, 0, 0, 0, 0, 0, 0]
     loops = 0
     start = timeit.default_timer()
 
@@ -54,29 +53,17 @@ def getAverage():
         thisAnswers = utils.getAnswers()
         guess = ['s', 'a', 'l', 'e', 't']
         while(True):
-            f.write(f"{utils.toString(guess)} \n")
             colors = utils.getColors(i, guess)
             if utils.toString(colors) == "GGGGG" or utils.toString(colors) == "ggggg":
                 thisGuesses += 1
                 if loops % 50 == 0:
                     print(loops)
-                if thisGuesses == 1:
-                    total1 += 1
-                elif thisGuesses == 2:
-                    total2 += 1
-                elif thisGuesses == 3:
-                    total3 += 1
-                elif thisGuesses == 4:
-                    total4 += 1
-                elif thisGuesses == 5:
-                    total5 += 1
-                elif thisGuesses == 6:
-                    total6 += 1
+                if thisGuesses >= 7:
+                    totals[7] += 1
                 else:
-                    totalx += 1
+                    totals[thisGuesses] += 1
                 guesses += thisGuesses
                 loops += 1
-                f.write("\n")
                 break
             
             thisAnswers = utils.checkFull(guess, colors, thisAnswers)
@@ -87,13 +74,13 @@ def getAverage():
     stop = timeit.default_timer()
     print(f"\n\n\n\nTotal guesses - {guesses}")
     print(f"Average - {guesses/2315}")
-    print(f"1 - {total1}")
-    print(f"2 - {total2}")
-    print(f"3 - {total3}")
-    print(f"4 - {total4}")
-    print(f"5 - {total5}")
-    print(f"6 - {total6}")
-    print(f"x - {totalx}")
+    print(f"1 - {totals[1]}")
+    print(f"2 - {totals[2]}")
+    print(f"3 - {totals[3]}")
+    print(f"4 - {totals[4]}")
+    print(f"5 - {totals[5]}")
+    print(f"6 - {totals[6]}")
+    print(f"x - {totals[7]}")
     print(f"Time - {stop-start}")
         
 
